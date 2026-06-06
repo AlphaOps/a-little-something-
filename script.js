@@ -7,6 +7,19 @@ let autoScrollFrame = null;
 let noteScrollListener = null;
 let noteInteractionListeners = null;
 
+// Google Sheets Tracking Helper
+function trackEvent(eventName) {
+    fetch("https://script.google.com/macros/s/AKfycbyFD3gFJ2u2c0rNhXz5L4iz_p755VBHRzLDPyq8upCVZsMbb631ZDcde9IekenFsOuyxQ/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+            action: eventName,
+            time: new Date().toLocaleString(),
+            page: window.location.pathname
+        })
+    }).catch(() => {});
+}
+
 // Global state for background music player
 let audio = null;
 let isMusicInitialized = false;
@@ -36,6 +49,7 @@ function transitionScreen(fromId, toId) {
 }
 
 function acceptPromise() {
+    trackEvent("Promise Accepted");
     const screen2 = document.getElementById("screen-2");
     const scrapbookStory = document.getElementById("scrapbook-story");
     
@@ -126,6 +140,8 @@ And somehow, after all these years, that deleted message still manages to do exa
 };
 
 function openNote(id) {
+    if (id === 1) trackEvent("Opened First Impression Letter");
+    else if (id === 2) trackEvent("Opened Favorite Memory Letter");
     const modal = document.getElementById("note-modal");
     const content = document.getElementById("note-card-content");
     const scrollArea = document.getElementById("note-scroll-area");
@@ -665,6 +681,7 @@ function transitionLetterToConfession() {
 
 // Final Confession Handwriting animation
 function triggerFinalReveal() {
+    trackEvent("Reached Final Confession Section");
     finalRevealStarted = true;
     const element = document.getElementById("confession-typewriter-text");
     const penCursor = document.getElementById("pen-cursor");
@@ -721,6 +738,7 @@ And one honest chance to see where this goes.`;
 
 // Date buttons row click handlers
 window.clickLetsMeet = function() {
+    trackEvent("Clicked Let's Meet");
     // Hide buttons row
     const btnRow = document.querySelector(".final-buttons-row");
     if (btnRow) {
@@ -741,6 +759,7 @@ window.clickLetsMeet = function() {
 };
 
 window.clickNeedTime = function() {
+    trackEvent("Clicked I Need More Time");
     // Hide buttons row
     const btnRow = document.querySelector(".final-buttons-row");
     if (btnRow) {
@@ -778,6 +797,7 @@ function celebrateHearts() {
 // ==========================================
 
 window.startExperience = function() {
+    trackEvent("Website Opened");
     const overlay = document.getElementById("music-start-overlay");
     if (overlay) {
         overlay.classList.add("fade-out");
