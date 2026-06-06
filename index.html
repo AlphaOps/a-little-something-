@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Ankita 💌</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Great+Vibes&family=Parisienne&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="style.css?v=4.4">
+</head>
+<body>
+
+    <!-- ==========================================
+       BACKGROUND MUSIC START OVERLAY
+       ========================================== -->
+    <div id="music-start-overlay" class="music-overlay" onclick="startExperience()">
+        <div class="music-overlay-box">
+            <div class="music-overlay-icon">🎵</div>
+            <h1 class="music-overlay-title">A Little Something For You</h1>
+            <p class="music-overlay-subtitle">This website has a special song.</p>
+            <div class="music-overlay-action">Tap anywhere to begin the experience.</div>
+        </div>
+    </div>
+
+    <!-- Floating Hearts Container (Used for celebration transitions only) -->
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <!-- ==========================================
+       SCREEN 1: Intro Card (Fullscreen Overlay)
+       ========================================== -->
+    <div id="screen-1" class="screen-overlay active">
+        <!-- Browser Bar decoration -->
+        <div class="browser-bar">
+            <div class="browser-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="browser-address">www.scrapbook.love/ankita</div>
+        </div>
+
+        <div class="scrapbook-canvas page-1">
+            <!-- Dedicated text container system (occupies Top 20% -> Top 50% of paper) -->
+            <div class="scrapbook-text-container">
+                <div class="page1-text-wrapper">
+                    <div class="line-1">Hey Ankita</div>
+                    <div class="line-2">I made</div>
+                    <div class="line-3">something for you</div>
+                </div>
+            </div>
+
+            <!-- Page 1 Bottom row for Cat Sticker and Button -->
+            <div class="page1-bottom-wrapper">
+                <img src="public/assets/emojis/page1-cat.png" class="sticker-emoji" id="emoji-1" onerror="this.style.visibility='hidden';">
+                <button class="btn-scrapbook" onclick="transitionScreen('screen-1', 'screen-2')">what?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       SCREEN 2: The Promise (Fullscreen Overlay)
+       ========================================== -->
+    <div id="screen-2" class="screen-overlay hidden">
+        <div class="browser-bar">
+            <div class="browser-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="browser-address">www.scrapbook.love/promise</div>
+        </div>
+
+        <div class="scrapbook-canvas page-2">
+            <!-- Dedicated text container system (occupies Top 20% -> Top 50% of paper) -->
+            <div class="scrapbook-text-container">
+                <div class="page2-text-wrapper">
+                    <div class="page2-line-1">Before you see it...</div>
+                    <div class="page2-line-2">Promise you'll stay till the end?</div>
+                </div>
+            </div>
+
+            <!-- Page 2 Layout container for Bear sticker and vertical buttons -->
+            <div class="page2-bottom-container">
+                <!-- Page 2 Emoji Sticker (Bears) -->
+                <img src="public/assets/emojis/page2-cat.png" class="sticker-emoji" id="emoji-2" onerror="handleBearImageError(this)">
+
+                <!-- Stacked Buttons Yes/Of course -->
+                <div class="page2-btn-container">
+                    <button class="btn-scrapbook" onclick="acceptPromise()">Yes ❤️</button>
+                    <button class="btn-scrapbook" onclick="acceptPromise()">Of course ❤️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       MAIN SCROLLABLE SCRAPBOOK (Page 3+)
+       ========================================== -->
+    <div id="scrapbook-story" class="scrapbook-scrollport">
+
+        <!-- ==========================================
+           PAGE 3: Envelope Grid
+           ========================================== -->
+        <section id="section-3" class="scrapbook-section">
+            <div class="scrapbook-canvas page-3">
+                <h2 class="envelopes-title">Open these letters...</h2>
+
+                <div class="envelopes-wrapper">
+                    <div class="envelope" onclick="openNote(1)">
+                        <div class="envelope-title">First Impression</div>
+                    </div>
+                    <div class="envelope" onclick="openNote(2)">
+                        <div class="envelope-title">My Favorite Memory</div>
+                    </div>
+                </div>
+
+                <img src="public/assets/emojis/page3-lovecat.png" class="sticker-emoji" id="emoji-3" onerror="this.style.visibility='hidden';">
+
+                <div class="scroll-arrow-down" onclick="scrollToNextSection('section-5')">Scroll Down 💖</div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+           PAGE 5: Milestone Timeline
+           ========================================== -->
+        <section id="section-5" class="scrapbook-section">
+            <div class="scrapbook-canvas page-5">
+                <h2 class="timeline-title">Our Story 🌸</h2>
+
+                <div class="timeline-wrapper">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-progress" id="timeline-progress-bar"></div>
+
+                    <!-- Node 1 -->
+                    <div class="timeline-node" id="node-1">
+                        <div class="node-circle">🌸</div>
+                        <div class="node-content">
+                            <div class="node-title">The First Hello</div>
+                            <div class="node-desc">Where two strangers met through mutual friends and unknowingly became part of each other’s story.</div>
+                        </div>
+                    </div>
+                    <!-- Node 2 -->
+                    <div class="timeline-node" id="node-2">
+                        <div class="node-circle">☕</div>
+                        <div class="node-content">
+                            <div class="node-title">That Deleted Message</div>
+                            <div class="node-desc">A message that lasted only a few seconds but somehow stayed in my memory for years.</div>
+                        </div>
+                    </div>
+                    <!-- Node 3 -->
+                    <div class="timeline-node" id="node-3">
+                        <div class="node-circle">🌙</div>
+                        <div class="node-content">
+                            <div class="node-title">The Long Silence</div>
+                            <div class="node-desc">Life took us in different directions, but some stories never completely leave us.</div>
+                        </div>
+                    </div>
+                    <!-- Node 4 -->
+                    <div class="timeline-node" id="node-4">
+                        <div class="node-circle">💌</div>
+                        <div class="node-content">
+                            <div class="node-title">Four Years Later</div>
+                            <div class="node-desc">Time passed. We changed. Yet one thought quietly stayed with me.</div>
+                        </div>
+                    </div>
+                    <!-- Node 5 -->
+                    <div class="timeline-node" id="node-5">
+                        <div class="node-circle">✨</div>
+                        <div class="node-content">
+                            <div class="node-title">The What If</div>
+                            <div class="node-desc">The reason this website exists today.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sticker -->
+                <img src="public/assets/emojis/page5-heartcat.png" class="sticker-emoji" id="emoji-5" onerror="this.style.visibility='hidden';">
+
+                <div class="scroll-arrow-down" onclick="scrollToNextSection('section-6')">Scroll Down 💖</div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+           PAGE 6: Letter & Date Proposal
+           ========================================== -->
+        <section id="section-6" class="scrapbook-section final-screen">
+            <div class="scrapbook-canvas page-6">
+                <!-- Pen Cursor -->
+                <div id="pen-cursor" class="pen-cursor">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 2L22 6L9 19L5 15L18 2Z" fill="#8D6E63" stroke="#4E342E" stroke-width="1.5"/>
+                        <path d="M5 15L3 21L9 19L5 15Z" fill="#BDBDBD" stroke="#4E342E" stroke-width="1.5"/>
+                        <path d="M3 21L5 19" stroke="#4E342E" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <!-- Skip Animation Button -->
+                <button id="skip-letter-btn" class="skip-letter-btn" onclick="skipTypewriter()">⏩ Skip Animation</button>
+                
+                <!-- Single scrollable column for the entire page -->
+                <div class="page6-scroll-col">
+
+                    <!-- ① Heartfelt Letter -->
+                    <div class="letter-page page6-paper" id="letter-page-wrapper">
+                        <div class="flower-spacer"></div>
+                        <div class="letter-header" id="letter-title-text"></div>
+                        <div class="letter-text" id="typewriter-text"></div>
+                        <!-- Continue button visible only after typewriter finishes -->
+                        <button id="continue-letter-btn" class="continue-btn hidden" onclick="transitionLetterToConfession()">One Last Thing 💌</button>
+                    </div>
+
+                    <!-- ② Final Confession (shown after letter fades) -->
+                    <div class="confession-box" id="confession-box">
+                        <div class="flower-spacer"></div>
+                        <div class="letter-header" style="text-align: center;">One Last Thing… 💌</div>
+                        <div class="letter-text" id="confession-typewriter-text"></div>
+                    </div>
+
+                    <!-- ③ Date Buttons — OUTSIDE the paper, in the column flow -->
+                    <div class="final-button-container" id="final-btn-container">
+                        <div class="final-buttons-row">
+                            <button class="btn-scrapbook primary-date-btn" onclick="clickLetsMeet()">💌 Let’s Meet</button>
+                            <button class="btn-scrapbook secondary-date-btn" onclick="clickNeedTime()">🌸 I Need More Time</button>
+                        </div>
+                        <div class="date-success hidden" id="lets-meet-banner">Then let’s create a new memory together ❤️</div>
+                        <div class="date-success hidden" id="need-time-banner">Take all the time you need. Some stories are worth waiting for 🌸</div>
+                    </div><!-- /final-button-container -->
+
+                </div><!-- /page6-scroll-col -->
+            </div><!-- /scrapbook-canvas page-6 -->
+        </section>
+
+
+
+    </div>
+
+    <!-- ==========================================
+       MODALS & POPUPS
+       ========================================== -->
+
+    <!-- Envelope Note Modals -->
+    <div class="note-modal" id="note-modal" onclick="closeNote()">
+        <div class="note-card" onclick="event.stopPropagation()">
+            <!-- Scroll Progress Bar -->
+            <div class="scroll-progress-container">
+                <div class="scroll-progress-bar" id="scroll-progress"></div>
+            </div>
+            <!-- Fixed Close Button -->
+            <button class="note-close-btn" onclick="closeNote()">✕</button>
+            <!-- Scrollable Content Area -->
+            <div class="note-card-scroll-area" id="note-scroll-area">
+                <div id="note-card-content"></div>
+            </div>
+            <!-- Scroll Animated Hint -->
+            <div class="scroll-hint-overlay" id="scroll-hint">↓ Scroll to continue reading ↓</div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================
+       FLOATING MUSIC PLAYER UI
+       ========================================== -->
+    <div id="music-player" class="music-player-container">
+        <!-- Normal Controls View -->
+        <div class="music-player-content" id="music-player-content">
+            <div class="music-player-left">
+                <div class="music-indicator" id="music-indicator">🎵</div>
+                <div class="music-info">
+                    <span class="music-title">Yellow - Coldplay</span>
+                </div>
+            </div>
+            <div class="music-player-right">
+                <button class="music-control-btn" id="music-play-btn" onclick="togglePlayPause()" aria-label="Play/Pause">
+                    <span class="play-icon" id="music-play-icon">▶</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Fallback/Error View -->
+        <div class="music-player-fallback hidden" id="music-player-fallback">
+            <div class="fallback-warning-icon">⚠️</div>
+            <div class="fallback-warning-text">
+                <strong>No music file found.</strong>
+                <span>Drop a file inside: <br><code>/assets/music/song.mp3</code></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Javascript logic -->
+    <script src="script.js?v=3.7"></script>
+</body>
+</html>
