@@ -32,15 +32,6 @@
        SCREEN 1: Intro Card (Fullscreen Overlay)
        ========================================== -->
     <div id="screen-1" class="screen-overlay active">
-        <!-- Browser Bar decoration -->
-        <div class="browser-bar">
-            <div class="browser-dots">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-            </div>
-            <div class="browser-address">www.scrapbook.love/ankita</div>
-        </div>
 
         <div class="scrapbook-canvas page-1">
             <!-- Dedicated text container system (occupies Top 20% -> Top 50% of paper) -->
@@ -64,21 +55,14 @@
        SCREEN 2: The Promise (Fullscreen Overlay)
        ========================================== -->
     <div id="screen-2" class="screen-overlay hidden">
-        <div class="browser-bar">
-            <div class="browser-dots">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-            </div>
-            <div class="browser-address">www.scrapbook.love/promise</div>
-        </div>
 
         <div class="scrapbook-canvas page-2">
             <!-- Dedicated text container system (occupies Top 20% -> Top 50% of paper) -->
             <div class="scrapbook-text-container">
                 <div class="page2-text-wrapper">
                     <div class="page2-line-1">Before you see it...</div>
-                    <div class="page2-line-2">Promise you'll stay till the end?</div>
+                    <div class="page2-line-2">Promise you'll stay</div>
+                    <div class="page2-line-3">till the end?</div>
                 </div>
             </div>
 
@@ -109,17 +93,22 @@
                 <h2 class="envelopes-title">Open these letters...</h2>
 
                 <div class="envelopes-wrapper">
-                    <div class="envelope" onclick="openNote(1)">
-                        <div class="envelope-title">First Impression</div>
+                    <div class="envelope-container">
+                        <div class="envelope-hint">⬇ Open this first</div>
+                        <div class="envelope" onclick="openNote(1)">
+                            <div class="envelope-title">First Impression</div>
+                        </div>
                     </div>
-                    <div class="envelope" onclick="openNote(2)">
-                        <div class="envelope-title">My Favorite Memory</div>
+                    <div class="envelope-container">
+                        <div class="envelope" onclick="openNote(2)">
+                            <div class="envelope-title">My Favorite Memory</div>
+                        </div>
                     </div>
                 </div>
 
                 <img src="public/assets/emojis/page3-lovecat.png" class="sticker-emoji" id="emoji-3" onerror="this.style.visibility='hidden';">
 
-                <div class="scroll-arrow-down" onclick="scrollToNextSection('section-5')">Scroll Down 💖</div>
+                <div class="scroll-arrow-down page3-scroll" onclick="scrollToNextSection('section-5')">Scroll Down</div>
             </div>
         </section>
 
@@ -179,7 +168,7 @@
                 <!-- Sticker -->
                 <img src="public/assets/emojis/page5-heartcat.png" class="sticker-emoji" id="emoji-5" onerror="this.style.visibility='hidden';">
 
-                <div class="scroll-arrow-down" onclick="scrollToNextSection('section-6')">Scroll Down 💖</div>
+                <div class="scroll-arrow-down page5-scroll" onclick="scrollToNextSection('section-6')">Scroll Down</div>
             </div>
         </section>
 
