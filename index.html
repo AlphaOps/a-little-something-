@@ -19,6 +19,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Great+Vibes&family=Parisienne&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <!-- CSS stylesheet -->
     <link rel="stylesheet" href="style.css?v=4.4">
+    <!-- Birthday Celebration Stylesheet -->
+    <link rel="stylesheet" href="birthday.css?v=1.0">
 </head>
 <body>
 
@@ -34,13 +36,160 @@
         </div>
     </div>
 
+    <!-- Persistent Floating Birthday Replay Button -->
+    <button id="bday-floating-replay" class="bday-floating-replay-btn" style="display: none;" onclick="openBirthdayOverlay()">
+        <span class="cake-icon">🎂</span>
+        <span>Birthday Surprise</span>
+    </button>
+
+    <!-- Canvas for Fireworks & Confetti -->
+    <canvas id="birthday-canvas"></canvas>
+
+    <!-- ==========================================
+       GRAND BIRTHDAY CELEBRATION OVERLAY
+       ========================================== -->
+    <div id="birthday-celebration-overlay" class="hidden">
+        <div class="bday-ambient-glow"></div>
+
+        <!-- Floating Balloons Layer -->
+        <div class="bday-balloons-layer">
+            <div class="bday-balloon b1" onclick="popBalloon(this, event)" title="Tap to pop!">
+                <div class="bday-balloon-string"></div>
+            </div>
+            <div class="bday-balloon b2" onclick="popBalloon(this, event)" title="Tap to pop!">
+                <div class="bday-balloon-string"></div>
+            </div>
+            <div class="bday-balloon b3" onclick="popBalloon(this, event)" title="Tap to pop!">
+                <div class="bday-balloon-string"></div>
+            </div>
+            <div class="bday-balloon b4" onclick="popBalloon(this, event)" title="Tap to pop!">
+                <div class="bday-balloon-string"></div>
+            </div>
+            <div class="bday-balloon b5" onclick="popBalloon(this, event)" title="Tap to pop!">
+                <div class="bday-balloon-string"></div>
+            </div>
+            <div class="bday-balloon b6" onclick="popBalloon(this, event)" title="Tap to pop!">
+                <div class="bday-balloon-string"></div>
+            </div>
+        </div>
+
+        <!-- Central Content Wrapper -->
+        <div class="bday-content-wrapper">
+            <div class="bday-glass-card">
+                <!-- Top Badge -->
+                <div class="bday-badge">
+                    <span class="bday-badge-sparkle">✨</span>
+                    <span>October 8th • A Very Special Day</span>
+                    <span class="bday-badge-sparkle">✨</span>
+                </div>
+
+                <!-- Main Titles -->
+                <h1 class="bday-title" id="bday-main-title">Happy Birthday, Ankita! 🎂</h1>
+                <p class="bday-subtitle" id="bday-subtitle-text">Today is dedicated to celebrating the wonderful person you are.</p>
+
+                <!-- Non-romantic, empowering message -->
+                <div class="bday-warm-message">
+                    May your day be filled with radiant joy, endless smiles, and every bit of happiness you bring to the world. Here's to good health, bold adventures, peace of mind, and a magnificent year ahead!
+                </div>
+
+                <!-- 3D Artisanal Cake & Interactive Candle -->
+                <div class="bday-cake-scene" id="bday-cake-scene" onclick="blowBirthdayCandle()" title="Click to blow candle & make a wish!">
+                    <div class="bday-candle-wrapper">
+                        <div class="bday-flame-container" id="bday-flame">
+                            <div class="bday-flame">
+                                <div class="bday-flame-inner"></div>
+                            </div>
+                        </div>
+                        <div class="bday-smoke-puff" id="bday-smoke"></div>
+                        <div class="bday-wick"></div>
+                        <div class="bday-candle"></div>
+                    </div>
+
+                    <!-- Top Tier -->
+                    <div class="bday-cake-tier tier-top">
+                        <div class="bday-cake-sprinkles"></div>
+                    </div>
+
+                    <!-- Bottom Tier -->
+                    <div class="bday-cake-tier tier-bottom">
+                        <div class="bday-cake-sprinkles"></div>
+                    </div>
+
+                    <!-- Stand -->
+                    <div class="bday-cake-stand"></div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="bday-action-container">
+                    <button class="bday-btn-blow" id="bday-blow-btn" onclick="blowBirthdayCandle()">
+                        <span>✨ Make a Wish & Blow Candle 🌬️</span>
+                    </button>
+
+                    <!-- Shown after candle is blown -->
+                    <div class="bday-post-blow-actions" id="bday-post-actions">
+                        <button class="bday-btn-secondary" onclick="relightCandle()">
+                            <span>🕯️ Relight Candle</span>
+                        </button>
+                        <button class="bday-btn-secondary" onclick="showerMoreSparkles()">
+                            <span>🎊 Shower Sparkles</span>
+                        </button>
+                        <button class="bday-btn-enter-scrapbook" onclick="enterScrapbookFromBirthday()">
+                            <span>Open Your Birthday Surprise Scrapbook 💌 →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Birthday Wish Orbs -->
+                <div class="bday-wishes-section">
+                    <div class="bday-wishes-label">✨ Tap a Wishing Star for You ✨</div>
+                    <div class="bday-orbs-grid">
+                        <div class="bday-wish-orb" onclick="openWishModal(0)">
+                            <div class="bday-wish-orb-icon">🌟</div>
+                            <div class="bday-wish-orb-title">Joy & Smiles</div>
+                            <div class="bday-wish-orb-hint">Tap to open</div>
+                        </div>
+                        <div class="bday-wish-orb" onclick="openWishModal(1)">
+                            <div class="bday-wish-orb-icon">💫</div>
+                            <div class="bday-wish-orb-title">Big Dreams</div>
+                            <div class="bday-wish-orb-hint">Tap to open</div>
+                        </div>
+                        <div class="bday-wish-orb" onclick="openWishModal(2)">
+                            <div class="bday-wish-orb-icon">🌿</div>
+                            <div class="bday-wish-orb-title">Peace & Health</div>
+                            <div class="bday-wish-orb-hint">Tap to open</div>
+                        </div>
+                        <div class="bday-wish-orb" onclick="openWishModal(3)">
+                            <div class="bday-wish-orb-icon">💖</div>
+                            <div class="bday-wish-orb-title">You Deserve It</div>
+                            <div class="bday-wish-orb-hint">Tap to open</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Wish Modal -->
+    <div class="bday-wish-modal" id="bday-wish-modal" onclick="closeWishModal()">
+        <div class="bday-wish-modal-card" onclick="event.stopPropagation()">
+            <div class="bday-wish-modal-icon" id="bday-modal-icon">🌟</div>
+            <h3 class="bday-wish-modal-title" id="bday-modal-title">Birthday Wish</h3>
+            <p class="bday-wish-modal-text" id="bday-modal-text"></p>
+            <button class="bday-wish-modal-close" onclick="closeWishModal()">Thank You ✨</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div class="bday-toast-banner" id="bday-toast"></div>
+
     <!-- Floating Hearts Container (Used for celebration transitions only) -->
     <div class="hearts-container" id="hearts-container"></div>
 
     <!-- ==========================================
        SCREEN 1: Intro Card (Fullscreen Overlay)
        ========================================== -->
-    <div id="screen-1" class="screen-overlay active">
+    <div id="screen-1" class="screen-overlay hidden">
 
         <div class="scrapbook-canvas page-1">
             <!-- Dedicated text container system (occupies Top 20% -> Top 50% of paper) -->
@@ -258,9 +407,9 @@
     </div>
 
 
-    <!-- ==========================================
-       FLOATING MUSIC PLAYER UI
-       ========================================== -->
+    <!-- Dedicated Audio Element -->
+    <audio id="bg-audio-element" src="assets/music/song.mp3" preload="auto" loop playsinline></audio>
+
     <div id="music-player" class="music-player-container">
         <!-- Normal Controls View -->
         <div class="music-player-content" id="music-player-content">
@@ -288,6 +437,8 @@
     </div>
 
     <!-- Core Javascript logic -->
-    <script src="script.js?v=3.7"></script>
+    <script src="script.js?v=4.0"></script>
+    <!-- Birthday Celebration logic -->
+    <script src="birthday.js?v=1.1"></script>
 </body>
 </html>

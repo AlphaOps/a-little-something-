@@ -811,90 +811,89 @@ window.startExperience = function() {
     }
 };
 
+let hasSeekedInitial = false;
+
 function initBackgroundMusic() {
-    if (isMusicInitialized) return;
+    if (isMusicInitialized && audio) {
+        if (audio.paused) {
+            audio.play().catch(e => console.warn("Audio resume deferred:", e));
+        }
+        return;
+    }
     isMusicInitialized = true;
 
-    audio = new Audio("/assets/music/song.mp3");
+    // Use HTML5 audio element if available, else new Audio
+    const existingAudio = document.getElementById("bg-audio-element");
+    audio = existingAudio || new Audio("assets/music/song.mp3");
     
+    // Direct audio settings
+    audio.volume = 0.85;
+    audio.muted = false;
+    audio.loop = true;
+
     // Fallback path handler
     audio.addEventListener('error', (e) => {
-        console.error('Audio failed to load', e);
-        if (audio.src.includes('/assets/music/song.mp3')) {
-            console.warn("Primary path failed. Retrying secondary path public/assets/music/song.mp3...");
+        console.error('Audio failed to load primary path', e);
+        if (audio.src && audio.src.includes('assets/music/song.mp3') && !audio.src.includes('public/')) {
+            console.warn("Retrying secondary path: public/assets/music/song.mp3");
             audio.src = 'public/assets/music/song.mp3';
             audio.load();
+            audio.play().catch(err => console.warn("Retry playback pending user gesture", err));
         } else {
             handleAudioError();
         }
     });
 
+    // Safely seek to 20s once metadata is loaded
     audio.addEventListener('loadedmetadata', () => {
-        console.log('Metadata loaded');
-        if (audio.currentTime < 20) {
-            audio.currentTime = 20;
+        if (!hasSeekedInitial && audio.duration >= 20) {
+            hasSeekedInitial = true;
+            try {
+                audio.currentTime = 20;
+            } catch (e) {
+                console.log("Initial seek deferred until playback:", e);
+            }
         }
-    });
-
-    audio.addEventListener('timeupdate', () => {
-        if (audio.currentTime < 20 && !audio.seeking) {
-            audio.currentTime = 20;
-        }
-    });
-
-    audio.addEventListener('ended', () => {
-        audio.currentTime = 20;
-        audio.play().catch(err => {
-            console.error("Failed to replay audio on ended event:", err);
-        });
     });
 
     audio.addEventListener('play', () => {
         updatePlayPauseUI(true);
-        startHeartParticles();
+        // Ensure starting point is around 20s if not already seeked
+        if (!hasSeekedInitial && audio.currentTime < 20) {
+            hasSeekedInitial = true;
+            try {
+                audio.currentTime = 20;
+            } catch (e) {}
+        }
     });
 
     audio.addEventListener('pause', () => {
         updatePlayPauseUI(false);
-        stopHeartParticles();
     });
 
-    // Start playback with 2-second volume fade-in
-    audio.volume = 0;
-    audio.muted = false;
-    
+    // Attempt playback immediately from user gesture
     const playPromise = audio.play();
     if (playPromise !== undefined) {
         playPromise.then(() => {
-            // Fade in volume over 2 seconds
-            let start = null;
-            const duration = 2000;
-            const targetVolume = 0.8; // Comfortable volume level (80%)
-            isFadingIn = true;
-            
-            function step(timestamp) {
-                if (!isFadingIn) return;
-                if (!start) start = timestamp;
-                const progress = timestamp - start;
-                const currentVol = Math.min((progress / duration) * targetVolume, targetVolume);
-                
-                if (audio) {
-                    audio.volume = currentVol;
-                }
-                
-                if (progress < duration && isFadingIn) {
-                    window.requestAnimationFrame(step);
-                } else {
-                    if (audio) {
-                        audio.volume = targetVolume;
-                    }
-                    isFadingIn = false;
-                }
-            }
-            window.requestAnimationFrame(step);
+            console.log("Audio playing successfully at volume:", audio.volume);
+            updatePlayPauseUI(true);
         }).catch(err => {
-            console.warn("Playback blocked by browser or file missing:", err);
-            handleAudioError();
+            console.warn("Audio autoplay blocked or waiting for user interaction:", err);
+            // Attach a one-touch document listener to unlock audio on next tap
+            const unlockAudio = () => {
+                if (audio) {
+                    audio.muted = false;
+                    audio.volume = 0.85;
+                    audio.play().then(() => {
+                        console.log("Audio unlocked and playing on user interaction");
+                        updatePlayPauseUI(true);
+                    }).catch(e => console.error("Still blocked:", e));
+                }
+                document.removeEventListener('click', unlockAudio);
+                document.removeEventListener('touchstart', unlockAudio);
+            };
+            document.addEventListener('click', unlockAudio);
+            document.addEventListener('touchstart', unlockAudio);
         });
     }
 }
@@ -906,19 +905,26 @@ function handleAudioError() {
         content.classList.add("hidden");
         fallback.classList.remove("hidden");
     }
-    stopHeartParticles();
 }
 
 window.togglePlayPause = function() {
-    if (!audio) return;
+    if (!audio) {
+        initBackgroundMusic();
+        return;
+    }
     
     if (audio.paused) {
-        audio.play().catch(err => {
+        audio.muted = false;
+        audio.volume = 0.85;
+        audio.play().then(() => {
+            updatePlayPauseUI(true);
+        }).catch(err => {
             console.error("Playback failed on togglePlayPause:", err);
             handleAudioError();
         });
     } else {
         audio.pause();
+        updatePlayPauseUI(false);
     }
 };
 
